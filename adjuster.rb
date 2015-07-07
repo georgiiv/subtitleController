@@ -155,10 +155,7 @@ Shoes.app( :width => 400, :height => 200 ) do
 				end
 			end
 
-			p subs[2192][0]
-			p subs[2192][1]
-			p subs[2192][2]
-			p subs[2192][3]
+			
 		end
 		@asd = para ""
 		
