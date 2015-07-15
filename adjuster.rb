@@ -1,11 +1,7 @@
 require 'green_shoes'
 
-=begin     #This is how you change the button label
-Shoes.app do
-  @btn = button('old text ') {|btn|alert('Hello, World!')}
-  button('Change!') {|btn|@btn.real.set_label("new")}
-end
-=end
+#the time you want to move is inserted like:    hh:mm:ss,ms
+#if you want to move backwards:    -hh:-mm:-ss,-ms
 
 =begin
 sub[i][0] -> sub number
@@ -14,21 +10,17 @@ sub[i][2] -> sub end time
 sub[i][3] -> sub text
 =end
 
-#the time you want to move is inserted like:    hh:mm:ss,ms
-#if you want to add negative time its added like:    -hh:-mm:-ss,-ms    Only put the minus in the place it's needed
-
-file_path = "Please Select file"
+file_path = "Open"
 time_to_move = ""
 subs = []
 
-Shoes.app(title: "Mover", width: 400, height: 400, resizable: false) do
-	background papayawhip
-	stack do
-		@click = button("Open") do
+Shoes.app(title: "Mover", width: 300, height: 350, resizable: false) do
+	background floralwhite..gray
+	stack(margin_left: 30, margin_right: 30, margin_top: 5) do
+		@click = button("#{file_path}") do
 			file_path = ask_open_file
-			@space.replace file_path
-		end
-		@space = para file_path
+			@click.real.set_label("#{file_path.split("/").last}")
+		end		
 		
 		@firstsubtext = para "from which subtitle to move"
 		@firstsub = edit_line("1")
@@ -82,6 +74,10 @@ Shoes.app(title: "Mover", width: 400, height: 400, resizable: false) do
 			move_miliseconds = time_to_move[2].split(",").last.to_i
 			
 			startmovesub = @firstsub.text.to_i
+			if startmovesub<1
+				startmovesub=1
+			end
+			
 			endmovesub = @lastsub.text.to_i					
 			
 			for i in startmovesub-1..subs.length-1
