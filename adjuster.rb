@@ -21,7 +21,7 @@ file_path = "Please Select file"
 time_to_move = ""
 subs = []
 
-Shoes.app( :width => 400, :height => 200 ) do
+Shoes.app(title: "Mover", width: 400, height: 400, resizable: false) do
 	background papayawhip
 	stack do
 		@click = button("Open") do
@@ -30,13 +30,19 @@ Shoes.app( :width => 400, :height => 200 ) do
 		end
 		@space = para file_path
 		
+		@firstsubtext = para "from which subtitle to move"
+		@firstsub = edit_line("1")
+		
+		@secondsubtext = para "to which subtitle to move (blank -> till the last)"
+		@lastsub = edit_line
+		
 		@movecapt = para "how much do you want to move?"
-		@movetime = edit_line
+		@movetime = edit_line("00:00:00,000")
+		
 		button "Move" do
 			@asd.replace ("moving #{@movetime.text}")
 			time_to_move = @movetime.text
 			
-			line_num=0
 			text = File.open("#{file_path}").read
 			text.gsub!(/\r\n?/, "\n")
 			parse = "sub_number"
@@ -46,14 +52,14 @@ Shoes.app( :width => 400, :height => 200 ) do
 					when "sub_number"
 						if line != "\n"
 							subs[i] = []
-							subs[i][0] = line
+							subs[i][0] = line.split("\n").first
 						
 							parse = "sub_time"
 						end
 					when "sub_time"
 						stime = line.split(" --> ")
 						subs[i][1] = stime[0]
-						subs[i][2] = stime[1]
+						subs[i][2] = stime[1].split("\n").first
 						
 						subs[i][3] = ""
 						parse = "sub_text"
@@ -75,14 +81,23 @@ Shoes.app( :width => 400, :height => 200 ) do
 			move_seconds = time_to_move[2].split(",").first.to_i
 			move_miliseconds = time_to_move[2].split(",").last.to_i
 			
-			for i in 0..subs.length-1
+			startmovesub = @firstsub.text.to_i
+			endmovesub = @lastsub.text.to_i					
+			
+			for i in startmovesub-1..subs.length-1
+				if i>0
+					if i==endmovesub		#I want 0 or blank to be till the last but without this it
+						break			#breaks the cycle immediately
+					end
+				end
+				
 				start_time = subs[i][1].split(":")
 				start_hours = start_time[0].to_i
 				start_minutes = start_time[1].to_i
 				start_seconds = start_time[2].split(",").first.to_i
 				start_miliseconds = start_time[2].split(",").last.to_i
 				
-				end_time = subs[i][2].split("\n").first.split(":")
+				end_time = subs[i][2].split(":")
 				end_hours = end_time[0].to_i
 				end_minutes = end_time[1].to_i
 				end_seconds = end_time[2].split(",").first.to_i
@@ -141,7 +156,7 @@ Shoes.app( :width => 400, :height => 200 ) do
 					end_hours += 1
 					end_minutes -= 60
 				end
-				if end_minutes < 59
+				if end_minutes < 0
 					end_hours -= 1
 					end_minutes += 60
 				end
@@ -151,11 +166,14 @@ Shoes.app( :width => 400, :height => 200 ) do
 			
 			File.open("#{file_path.split(".srt").first}_moved.srt", 'w') do |file|
 				for i in 0..subs.length-1
-					file.write("#{subs[i][0]}#{subs[i][1]} --> #{subs[i][2]}\n#{subs[i][3]}\n")
+					file.write("#{subs[i][0]}\r\n#{subs[i][1]} --> #{subs[i][2]}\r\n#{subs[i][3]}\r\n")
 				end
 			end
 
-			
+			p subs[2192][0]
+			p subs[2192][1]
+			p subs[2192][2]
+			p subs[2192][3]
 		end
 		@asd = para ""
 		
@@ -164,4 +182,3 @@ end
 
 p file_path
 p time_to_move
-
