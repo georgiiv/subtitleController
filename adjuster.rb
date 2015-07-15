@@ -171,6 +171,3 @@ Shoes.app(title: "Mover", width: 300, height: 350, resizable: false) do
 		
 	end
 end
-
-p file_path
-p time_to_move
