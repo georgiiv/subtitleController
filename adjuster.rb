@@ -166,10 +166,6 @@ Shoes.app(title: "Mover", width: 300, height: 350, resizable: false) do
 				end
 			end
 
-			p subs[2192][0]
-			p subs[2192][1]
-			p subs[2192][2]
-			p subs[2192][3]
 		end
 		@asd = para ""
 		
