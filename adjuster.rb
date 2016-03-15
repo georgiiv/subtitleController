@@ -100,63 +100,71 @@ Shoes.app(title: "Mover", width: 300, height: 350, resizable: false) do
 				end_miliseconds = end_time[2].split(",").last.to_i
 				
 				start_miliseconds += move_miliseconds
-				if start_miliseconds > 999
-					start_seconds += 1
-					start_miliseconds -= 1000
-				end
-				if start_miliseconds < 0
-					start_seconds -= 1
-					start_miliseconds += 1000
-				end
 				start_seconds += move_seconds
-				if start_seconds > 59
-					start_minutes += 1
-					start_seconds -= 60
-				end
-				if start_seconds < 0
-					start_minutes -= 1
-					start_seconds += 60
-				end
 				start_minutes += move_minutes
-				if start_minutes > 59
-					start_hours += 1
-					start_minutes -= 60
-				end
-				if start_minutes < 0
-					start_hours -= 1
-					start_minutes += 60
-				end
 				start_hours += move_hours
-				subs[i][1] = "#{start_hours}:#{start_minutes}:#{start_seconds},#{start_miliseconds}"
 				
 				end_miliseconds += move_miliseconds
-				if end_miliseconds > 999
-					end_seconds += 1
-					end_miliseconds -= 1000
-				end
-				if end_miliseconds < 0 
-					end_seconds -= 1
-					end_miliseconds += 1000
-				end
 				end_seconds += move_seconds
-				if end_seconds > 59
-					end_minutes += 1
-					end_seconds -= 60
-				end
-				if end_seconds < 0
-					end_minutes -= 1
-					end_seconds += 60
-				end
 				end_minutes += move_minutes
-				if end_minutes > 59
-					end_hours += 1
-					end_minutes -= 60
+				end_hours += move_hours	
+				
+				while(start_miliseconds > 999 or start_miliseconds < 0 or start_seconds > 59 or start_seconds < 0 or start_minutes > 59 or start_minutes < 0 or end_miliseconds > 999 or end_miliseconds < 0 or end_seconds > 59 or end_seconds < 0 or end_minutes > 59 or end_minutes < 0) do
+				
+					if start_miliseconds > 999
+						start_seconds += 1
+						start_miliseconds -= 1000
+					end
+					if start_miliseconds < 0
+						start_seconds -= 1
+						start_miliseconds += 1000
+					end				
+					if start_seconds > 59
+						start_minutes += 1
+						start_seconds -= 60
+					end
+					if start_seconds < 0
+						start_minutes -= 1
+						start_seconds += 60
+					end				
+					if start_minutes > 59
+						start_hours += 1
+						start_minutes -= 60
+					end
+					if start_minutes < 0
+						start_hours -= 1
+						start_minutes += 60
+					end				
+					if end_miliseconds > 999
+						end_seconds += 1
+						end_miliseconds -= 1000
+					end
+					if end_miliseconds < 0 
+						end_seconds -= 1
+						end_miliseconds += 1000
+					end				
+					if end_seconds > 59
+						end_minutes += 1
+						end_seconds -= 60
+					end
+					if end_seconds < 0
+						end_minutes -= 1
+						end_seconds += 60
+					end				
+					if end_minutes > 59
+						end_hours += 1
+						end_minutes -= 60
+					end
+					if end_minutes < 0
+						end_hours -= 1
+						end_minutes += 60
+					end
+					
+				
+				
 				end
-				if end_minutes < 0
-					end_hours -= 1
-					end_minutes += 60
-				end
-				end_hours += move_hours				
+				
+				subs[i][1] = "#{start_hours}:#{start_minutes}:#{start_seconds},#{start_miliseconds}"			
 				subs[i][2] = "#{end_hours}:#{end_minutes}:#{end_seconds},#{end_miliseconds}"
 			end
 			
@@ -166,8 +174,16 @@ Shoes.app(title: "Mover", width: 300, height: 350, resizable: false) do
 				end
 			end
 
+			p subs[2192][0]
+			p subs[2192][1]
+			p subs[2192][2]
+			p subs[2192][3]
 		end
 		@asd = para ""
 		
 	end
 end
+
+p file_path
+p time_to_move
+
